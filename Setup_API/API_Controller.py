@@ -10,7 +10,7 @@ import numpy as np
 
 app = FastAPI()
 
-df = pd.read_csv("../master_data_cleaned_merged.csv")
+df = pd.read_csv("../HuanLuyenMoHinh/master_data_cleaned_merged.csv")
 
 
 def normalize_text(text: str):
@@ -48,8 +48,8 @@ def get_province(province: str):
 
 # ------------Predict------------
 # Load model & scaler
-scaler = joblib.load("../features_scaler.joblib")
-model = joblib.load("../random_forest_model.joblib")
+scaler = joblib.load("../HuanLuyenMoHinh/features_scaler.joblib")
+model = joblib.load("../HuanLuyenMoHinh/random_forest_model.joblib")
 
 # Schema cho request body
 class DTIInput(BaseModel):
