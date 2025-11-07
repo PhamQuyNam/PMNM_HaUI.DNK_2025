@@ -75,13 +75,16 @@ const glassmorphismStyle = (borderRadiusLG) => ({
 });
 
 // HÀM PHÂN TÍCH KẾT QUẢ (Không đổi)
+// HÀM PHÂN TÍCH KẾT QUẢ (Đã cập nhật)
 const getDtiResult = (score) => {
-  if (score > 75) return { text: "Rất cao", color: "#00b96b" };
-  if (score > 70) return { text: "Cao", color: "#52c41a" };
-  if (score > 65) return { text: "Khá", color: "#fadb14" };
-  return { text: "Trung bình", color: "#fa8c16" };
-};
+  if (score > 75) return { text: "Rất cao", color: "#00b96b" }; // Xanh lá theme
+  if (score > 70) return { text: "Cao", color: "#52c41a" }; // Xanh lá AntD
+  if (score > 65) return { text: "Khá", color: "#fadb14" }; // Vàng AntD
+  if (score > 60) return { text: "Trung bình", color: "#fa8c16" }; // Cam AntD
 
+  // --- DÒNG MỚI ĐƯỢC THÊM ---
+  return { text: "Thấp", color: "#ff4d4f" }; // Đỏ (Màu AntD Error)
+};
 const SimulationPage = () => {
   const { isLoading } = useData();
   const {
@@ -151,19 +154,32 @@ const SimulationPage = () => {
   return (
     <div>
       {/* TIÊU ĐỀ DẪN DẮT (Không đổi) */}
-      <Title level={2}>Mô phỏng và Dự đoán DTI </Title>
+      <Title
+        level={2}
+        style={{
+          textAlign: "center", // 1. Căn ra giữa
+          marginBottom: "16px", // 2. Thêm khoảng cách bên dưới
+
+          // 3. Hiệu ứng Gradient (chuyển màu)
+          background: "linear-gradient(90deg, #00b96b, #00874e)", // Chuyển từ xanh lá mạ sang xanh đậm
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+        }}
+      >
+        Dự đoán DTI
+      </Title>
       <Paragraph type="secondary" style={{ marginBottom: 24, maxWidth: 800 }}>
-        Đây là phòng thí nghiệm mô phỏng. Hãy thử điều chỉnh các chỉ số đầu vào
-        (bằng cách kéo thanh trượt hoặc nhập số) để xem Chỉ số DTI (Tổng) dự
-        đoán thay đổi như thế nào.
+        Hãy điều chỉnh các chỉ số đầu vào (bằng cách kéo thanh trượt hoặc nhập
+        số) để xem Chỉ số DTI (Tổng) dự đoán thay đổi như thế nào.
       </Paragraph>
 
       <Row gutter={[16, 16]}>
         {/* === CỘT INPUT (ĐÃ SỬA LẠI) === */}
         <Col xs={24} md={12}>
           <Card
-            title="Điều khiển Mô phỏng"
+            title="Các Chỉ Số Đầu Vào"
             bordered={false}
+            headStyle={{ textAlign: "center" }}
             style={glassmorphismStyle(borderRadiusLG)}
             className="dashboard-card"
           >
@@ -181,7 +197,7 @@ const SimulationPage = () => {
               block
               style={{ marginTop: 24, height: 40, fontSize: 16 }}
             >
-              {isPredicting ? "Đang dự đoán..." : "Chạy Dự đoán DTI"}
+              {isPredicting ? "Đang dự đoán..." : "Chạy Dự đoán"}
             </Button>
           </Card>
         </Col>
@@ -189,8 +205,9 @@ const SimulationPage = () => {
         {/* === CỘT OUTPUT (Không đổi) === */}
         <Col xs={24} md={12}>
           <Card
-            title="Kết quả Dự đoán"
+            title="Kết Quả Dự Đoán"
             bordered={false}
+            headStyle={{ textAlign: "center" }}
             style={glassmorphismStyle(borderRadiusLG)}
             className="dashboard-card"
           >
