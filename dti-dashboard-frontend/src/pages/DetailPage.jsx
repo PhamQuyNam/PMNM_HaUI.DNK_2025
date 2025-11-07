@@ -2,7 +2,11 @@
 import React, { useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Button, Card, Row, Col, Spin, Statistic, Tabs, theme } from "antd";
-import { ArrowLeftOutlined } from "@ant-design/icons";
+import {
+  ArrowLeftOutlined,
+  RadarChartOutlined, // <-- THÊM ICON NÀY
+  BarChartOutlined, // <-- VÀ ICON NÀY
+} from "@ant-design/icons";
 
 import { useData } from "../contexts/DataContext.jsx";
 import TrendLineChart from "../components/charts/TrendLineChart.jsx";
@@ -58,13 +62,24 @@ const DetailPage = () => {
   const breakdownItems = [
     {
       key: "1",
-      label: "Tab 1: Phân rã DTI",
+      label: (
+        <span>
+          <RadarChartOutlined style={{ marginRight: "8px" }} />{" "}
+          {/* <-- THÊM VÀO ĐÂY */}
+          Phân rã DTI
+        </span>
+      ),
       children: <DTIRadarChart latestData={latestData} />,
     },
     {
       key: "2",
-      label: "Tab 2: Phân rã Dịch vụ công",
-      // Thay thế "Sắp có..." bằng component mới
+      label: (
+        <span>
+          <BarChartOutlined style={{ marginRight: "8px" }} />{" "}
+          {/* <-- THÊM VÀO ĐÂY */}
+          Phân rã Dịch vụ công
+        </span>
+      ),
       children: <DVCBarChart latestData={latestData} />,
     },
   ];
@@ -79,7 +94,7 @@ const DetailPage = () => {
         <Link to="/">Quay lại Dashboard Tổng quan</Link>
       </Button>
 
-      <h1>Chi tiết: TỈNH {provinceName}</h1>
+      <h1>Chi Tiết Tỉnh {provinceName}</h1>
 
       {/* 5 Thẻ KPI */}
       <Row gutter={16} style={{ marginBottom: 16 }}>
@@ -90,9 +105,9 @@ const DetailPage = () => {
             className="dashboard-card"
           >
             <Statistic
-              title="DTI Tổng (Năm 2024)"
-              value={latestData.DTI_Tong.toFixed(2)}
-              suffix="điểm"
+              title="DTI Tổng (Năm 2024)" // <-- SỬA 1: Thêm (%)
+              value={(latestData.DTI_Tong * 100).toFixed(2)} // <-- SỬA 2: Nhân 100
+              suffix="%" // <-- SỬA 3: Đổi sang %
             />
           </Card>
         </Col>
@@ -115,10 +130,9 @@ const DetailPage = () => {
             style={glassmorphismStyle(borderRadiusLG)}
             className="dashboard-card"
           >
-            {/* (Vẫn đang dùng HaTangSo làm dữ liệu tạm) */}
             <Statistic
-              title="Điểm DVC (Tạm)"
-              value={latestData.HaTangSo.toFixed(2)}
+              title="Điểm Dịch vụ công" // <-- SỬA 1: Bỏ (Tạm)
+              value={latestData.TongDiem_DVC.toFixed(2)} // <-- SỬA 2: Dùng đúng data field
               suffix="điểm"
             />
           </Card>
@@ -140,7 +154,7 @@ const DetailPage = () => {
           >
             <Statistic
               title="Đô thị hóa"
-              value={latestData.TyLeThanhThi}
+              value={latestData.TyLeThanhThi.toFixed(2)}
               suffix="%"
             />
           </Card>
