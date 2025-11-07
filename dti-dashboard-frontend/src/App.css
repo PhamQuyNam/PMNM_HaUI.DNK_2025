@@ -1,0 +1,13 @@
+/*
+ * Chúng ta sẽ dùng class .dashboard-card này
+ * để thêm hiệu ứng cho các thẻ <Card>
+ */
+
+.dashboard-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Thêm hiệu ứng "mượt" */
+}
+
+.dashboard-card:hover {
+  transform: translateY(-5px); /* Nâng thẻ lên 5px khi di chuột */
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1); /* Đổ bóng đậm hơn */
+}

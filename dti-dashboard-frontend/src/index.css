@@ -1,0 +1,10 @@
+/* Xóa hết code cũ (nếu có) và dán code này vào */
+
+body {
+  /* Đây là dải màu (gradient) tinh tế.
+    Bạn có thể thay đổi màu #e6f7ff (xanh nhạt) và #f0f5ff (tím nhạt)
+    để có màu bạn thích!
+  */
+  background-image: linear-gradient(120deg, #e6f7ff 0%, #f0f5ff 100%);
+  background-attachment: fixed;
+}
