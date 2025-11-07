@@ -9,14 +9,14 @@ const center = [16.047079, 108.20623];
 const zoom = 6;
 
 const getColor = (dti) => {
-  if (!dti) return "#808080";
-  return dti > 0.75
-    ? "#006d2c"
-    : dti > 0.7
-    ? "#2ca25f"
-    : dti > 0.65
-    ? "#66c2a4"
-    : "#b2e2e2";
+  if (!dti) return "#808080"; // Màu xám cho không có dữ liệu
+  return dti > 75 // DTI cao nhất (trên 75) -> Đỏ đậm nhất
+    ? "#a50f15" // Ví dụ: Đỏ đậm
+    : dti > 70 // DTI từ 70 đến 75 -> Đỏ vừa
+    ? "#de2d26" // Ví dụ: Đỏ vừa
+    : dti > 65 // DTI từ 65 đến 70 -> Cam/đỏ nhạt
+    ? "#fb6a4a" // Ví dụ: Cam đỏ
+    : "#fcae91"; // DTI thấp nhất (dưới 65) -> Cam nhạt nhất
 };
 
 // 1. === HÀM CHUẨN HÓA TÊN (ĐỂ SỬA LỖI) ===
@@ -25,12 +25,15 @@ const getColor = (dti) => {
 const normalizeName = (name) => {
   if (!name) return "";
   return name
-    .replace("Thành phố ", "")
-    .replace("Tỉnh ", "")
-    .replace("TP. ", "");
-  // (Sau này chúng ta có thể thêm các luật khác nếu cần)
+    .toLowerCase() // 1. Chuyển về chữ thường
+    .replace("thành phố ", "") // 2. Loại bỏ tiền tố (đã ở chữ thường)
+    .replace("tỉnh ", "")
+    .replace("tp. ", "")
+    .replace(/-/g, "") // 3. Loại bỏ tất cả dấu gạch nối
+    .replace(/\s+/g, ""); // 4. Loại bỏ tất cả khoảng trắng
+  // Ví dụ: "Bà Rịa - Vũng Tàu" -> "bàrịavũngtàu"
+  // "TP. Hồ Chí Minh" -> "hồchíminh"
 };
-// =======================================
 
 const styleGeoJSON = (feature) => {
   const dti = feature.properties.DTI_Tong;
@@ -81,7 +84,7 @@ const VietnamMap = ({ year, data, onProvinceClick }) => {
 
         const mergedFeatures = geoJsonData.features.map((feature) => {
           // Chuẩn hóa tên tỉnh từ file bản đồ
-          const provinceName = feature.properties.name;
+          const provinceName = feature.properties.ten_tinh;
           const normalizedGeoName = normalizeName(provinceName);
 
           // Lấy dữ liệu bằng tên đã chuẩn hóa
@@ -116,7 +119,8 @@ const VietnamMap = ({ year, data, onProvinceClick }) => {
     if (props.DTI_Tong) {
       layer.bindTooltip(
         `<b>Tỉnh: ${props.DisplayName}</b><br/>
-         DTI: ${props.DTI_Tong.toFixed(2)} | Hạng: ${props.Rank}`
+         DTI: <strong>${props.DTI_Tong.toFixed(2)}% </strong><br/>
+         Hạng: <strong>${props.Rank}</strong>`
       );
     } else {
       layer.bindTooltip(
