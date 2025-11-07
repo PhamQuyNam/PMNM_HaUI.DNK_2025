@@ -37,3 +37,10 @@ body {
   opacity: 0.9;
   border: 1px solid #777; /* Thêm viền mỏng cho ô màu */
 }
+/* Làm cho Tag chú giải ở trang Mô phỏng đẹp hơn */
+.ant-tag {
+  font-size: 14px;
+  padding: 4px 10px;
+  font-weight: 600;
+  border-radius: 4px;
+}

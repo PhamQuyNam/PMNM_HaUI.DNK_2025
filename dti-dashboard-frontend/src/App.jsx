@@ -26,7 +26,7 @@ const items = [
     "2",
     <ExperimentOutlined />,
     null,
-    "Dự đoán hiệu quả dịch vụ công trực tuyến..." // (Tên dài của bạn)
+    "Dự đoán hiệu quả dịch vụ công trực tuyến từ dữ liệu công khai (Open Data) của Bộ TT&TT(2022-2024)" // (Tên dài của bạn)
   ),
 ];
 
