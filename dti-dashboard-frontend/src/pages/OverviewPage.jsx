@@ -31,6 +31,14 @@ const columns = [
     dataIndex: "DTI_Tong",
     key: "DTI_Tong",
     sorter: (a, b) => a.DTI_Tong - b.DTI_Tong,
+    // --- THÊM PHẦN NÀY VÀO ---
+    render: (value) => {
+      if (typeof value === "number") {
+        return value.toFixed(2); // Làm tròn 2 chữ số
+      }
+      return "N/A"; // Hiển thị 'N/A' nếu không phải số
+    },
+    //
   },
   {
     title: "GRDP/người (triệu)",

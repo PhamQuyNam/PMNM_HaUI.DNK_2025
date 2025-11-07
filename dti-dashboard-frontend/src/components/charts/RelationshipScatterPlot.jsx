@@ -9,8 +9,15 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-
-ChartJS.register(LinearScale, PointElement, LineElement, Tooltip, Legend);
+import annotationPlugin from "chartjs-plugin-annotation";
+ChartJS.register(
+  LinearScale,
+  PointElement,
+  LineElement,
+  Tooltip,
+  Legend,
+  annotationPlugin
+);
 
 // Hàm chuẩn hóa bán kính (ĐÃ NÂNG CẤP DÙNG LOG SCALE)
 const scaleRadius = (population, minPop, maxPop) => {
@@ -118,24 +125,34 @@ const RelationshipScatterPlot = ({ data, avgGDP, avgDTI }) => {
         padding: { bottom: 20 },
         font: { size: 14 },
       },
+      // ...
+      // ...
       tooltip: {
         callbacks: {
+          // 1. Dùng 'label' để hiển thị Tên Tỉnh (sẽ tự động kèm ô màu)
           label: function (context) {
             const item = context.dataset.data[context.dataIndex];
-            let label = item.label || "";
-            if (label) {
-              label += ": ";
-            }
+            return item.label || ""; // Ví dụ: "Hà Nội"
+          },
+
+          // 2. Dùng 'afterLabel' để hiển thị 3 dòng dữ liệu
+          afterLabel: function (context) {
+            const item = context.dataset.data[context.dataIndex];
             const popString = item.population.toLocaleString("vi-VN");
-            label += `(GRDP: ${context.parsed.x.toFixed(
-              2
-            )}, DTI: ${context.parsed.y.toFixed(
-              2
-            )}%, Dân số: ${popString} nghìn)`;
-            return label;
+
+            // Tạo một mảng các dòng
+            const lines = [
+              `GRDP: ${context.parsed.x.toFixed(2)} (triệu)`,
+              `DTI: ${context.parsed.y.toFixed(2)}%`,
+              `Dân số: ${popString} (nghìn)`,
+            ];
+
+            return lines; // Chart.js sẽ tự ngắt dòng cho mảng này
           },
         },
       },
+      // ...
+      // ...
       // Thêm đường kẻ trung bình (tùy chọn nâng cao)
       annotation: {
         annotations: {
@@ -143,29 +160,57 @@ const RelationshipScatterPlot = ({ data, avgGDP, avgDTI }) => {
             type: "line",
             xMin: avgGDP,
             xMax: avgGDP,
-            borderColor: "rgba(0, 0, 0, 0.3)",
+            borderColor: "rgba(248, 4, 4, 0.3)",
             borderWidth: 2,
             borderDash: [6, 6],
             label: {
               content: `GRDP TB: ${avgGDP.toFixed(2)}`,
-              enabled: true,
+              enabled: true, // <-- 1. SỬA LẠI THÀNH 'true'
+              display: false, // <-- 2. THÊM DÒNG NÀY (Ẩn mặc định)
               position: "start",
               font: { size: 10 },
             },
+
+            // --- 3. THÊM 2 HÀM SỰ KIỆN NÀY VÀO ---
+            // Khi chuột di vào đường kẻ
+            enter(context) {
+              context.element.label.options.display = true; // Hiện label
+              context.chart.draw(); // Vẽ lại chart
+            },
+            // Khi chuột di ra
+            leave(context) {
+              context.element.label.options.display = false; // Ẩn label
+              context.chart.draw(); // Vẽ lại chart
+            },
+            // ------------------------------------
           },
           avgDTILine: {
             type: "line",
             yMin: avgDTI,
             yMax: avgDTI,
-            borderColor: "rgba(0, 0, 0, 0.3)",
+            borderColor: "rgba(250, 2, 2, 0.3)",
             borderWidth: 2,
             borderDash: [6, 6],
             label: {
               content: `DTI TB: ${avgDTI.toFixed(2)}%`,
-              enabled: true,
+              enabled: true, // <-- 1. SỬA LẠI THÀNH 'true'
+              display: false, // <-- 2. THÊM DÒNG NÀY (Ẩn mặc định)
               position: "end",
               font: { size: 10 },
             },
+
+            // --- 3. THÊM 2 HÀM SỰ KIỆN NÀY VÀO ---
+            // Khi chuột di vào đường kẻ
+            enter(context) {
+              context.element.label.options.display = true; // Hiện label
+              context.chart.draw(); // Vẽ lại chart
+            },
+            // Khi chuột di ra
+            leave(context) {
+              context.element.label.options.display = false; // Ẩn label
+              context.chart.draw(); // Vẽ lại chart
+            },
+            // ------------------------------------
           },
         },
       },

@@ -11,3 +11,30 @@
   transform: translateY(-5px); /* Nâng thẻ lên 5px khi di chuột */
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1); /* Đổ bóng đậm hơn */
 }
+/* --- CSS cho Logo ở Sider (Bản sửa lỗi) --- */
+.logo-container {
+  height: 64px;
+  padding: 10px; /* <-- SỬA: Đệm 10px ở mọi phía */
+  box-sizing: border-box;
+
+  /* --- THÊM 2 DÒNG NÀY --- */
+  background-color: #ffffff; /* 1. Thêm nền trắng */
+  border-radius: 6px; /* 2. Bo tròn góc cho hộp trắng (cho đẹp) */
+
+  /* Dùng margin để căn hộp logo ra giữa */
+  margin: 8px 10px; /* (Tùy chọn: Thêm margin nếu muốn) */
+
+  /* CẬP NHẬT: Chiều cao hộp Sider là 64px, 
+     chúng ta đặt margin 8px trên/dưới, 
+     vậy hộp logo sẽ cao 64-16=48px 
+  */
+  height: 48px;
+}
+
+.logo-image {
+  width: 100%;
+  height: 100%; /* Chiều cao 100% của hộp (48px) */
+  object-fit: contain;
+  object-position: center;
+  transition: all 0.3s;
+}

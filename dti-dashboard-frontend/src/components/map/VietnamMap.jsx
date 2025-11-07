@@ -1,8 +1,9 @@
 // src/components/map/VietnamMap.jsx
 import React, { useEffect, useState } from "react";
-import { MapContainer, TileLayer, GeoJSON, Tooltip } from "react-leaflet";
+import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
 import axios from "axios";
 import { Spin } from "antd";
+import Legend from "./Legend.jsx";
 
 const VIETNAM_GEOJSON_URL = "/vietnam-provinces.geojson"; // Đọc từ file local
 const center = [16.047079, 108.20623];
@@ -171,6 +172,7 @@ const VietnamMap = ({ year, data, onProvinceClick }) => {
           style={styleGeoJSON}
           onEachFeature={onEachFeature}
         />
+        <Legend />
       </MapContainer>
     </div>
   );
