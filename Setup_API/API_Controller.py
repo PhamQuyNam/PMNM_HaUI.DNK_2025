@@ -7,8 +7,16 @@ import unicodedata
 from pydantic import BaseModel
 import joblib
 import numpy as np
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],          # Cho phép tất cả domain (frontend)
+    allow_credentials=True,
+    allow_methods=["*"],          # GET, POST, PUT, DELETE...
+    allow_headers=["*"],          # Cho phép mọi header
+)
 
 df = pd.read_csv("../HuanLuyenMoHinh/master_data_cleaned_merged.csv")
 
